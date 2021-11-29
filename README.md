@@ -63,4 +63,6 @@ Here are the backend languages currently available :
 
 - [X] python
 - [ ] nodeJS
+- [ ] ruby
+- [ ] java
 - [ ] golang
