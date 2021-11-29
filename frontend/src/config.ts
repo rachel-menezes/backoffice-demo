@@ -1,0 +1,1 @@
+export const baseApiUri = process.env.NODE_ENV === 'development' ? "http://127.0.0.1:5000/api/v1" : "https://python-api-formal.herokuapp.com/api/v1";
