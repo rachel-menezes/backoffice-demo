@@ -59,8 +59,10 @@ def fetch():
 
 ## Support
 
-Here are the backend languages currently available :
+Here are the backend languages currently supported :
 
 - [X] python
 - [ ] nodeJS
+- [ ] ruby
+- [ ] java
 - [ ] golang
