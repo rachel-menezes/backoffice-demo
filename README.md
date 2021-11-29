@@ -16,6 +16,8 @@ GET endpoint/?endUserID=5
 ```
 ![image](https://user-images.githubusercontent.com/43049559/143810587-f26274d9-a1dd-4477-a44a-581dee595021.png)
 
+## Implementation 
+
 ### Python
 
 We have built a [wrapper (formal sql-commenter library)](https://github.com/formalco/sqlcommenter) around `psycopg2` so that you can add easily integrate Formal to your python apis.
