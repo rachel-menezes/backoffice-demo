@@ -11,6 +11,7 @@ app = flask.Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+
 host = os.getenv('DATABASE_URL')
 dbName = os.getenv('DATABASE_NAME')
 user = os.getenv('DATABASE_USER')
