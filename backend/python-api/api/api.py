@@ -57,7 +57,7 @@ def fetch():
     else:
         return "Error: No end user id field provided. Please specify an endUserID."
     try:
-        cursor.execute("select * from pii;", endUserID)
+        cursor.execute("select * from pii", endUserID)
         return jsonify(cursor.fetchall())
     except:
         return "Error: an error occured. Please try again."
