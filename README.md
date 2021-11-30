@@ -27,6 +27,7 @@ import psycopg2
 from formal.sqlcommenter.psycopg2.extension import CommenterCursorFactory
 import os
 
+REACT_APP_COMPANY_NAME
 host = os.getenv('DATABASE_URL')
 dbName = os.getenv('DATABASE_NAME')
 user = os.getenv('DATABASE_USER')
