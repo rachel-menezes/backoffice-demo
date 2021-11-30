@@ -57,7 +57,7 @@ export default function DenseAppBar(props: any) {
     const { user, setUser, config } = props;
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ backgroundColor: "#F3FCF8" }}>
+            <AppBar position="static" style={{ backgroundColor: config.thirdColor }}>
                 <Toolbar variant="dense">
                     <Box sx={{ flexGrow: 1 }}>
                         <img width={'150px'} style={{ maxWidth: '200px' }} src={config.logoUrl} alt={"headway"} />
