@@ -13,4 +13,4 @@ toml==0.10.2
 Werkzeug==2.0.2
 waitress==2.0.0
 gunicorn
-formal-sqlcommenter==1.0.3
+formal-sqlcommenter==1.0.4
