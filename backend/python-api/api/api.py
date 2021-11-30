@@ -29,7 +29,7 @@ cursor = conn.cursor()
 users = [{
     'id': 0,
     'name': 'John Doe',
-    'email': 'john@headway.co',
+    'email': 'john@formal.com',
     'firstName': 'John',
     'lastName': 'Doe',
     'password': 'johndoe',
@@ -37,7 +37,7 @@ users = [{
     {
     'id': 1,
     'name': 'Ada Lovelayce',
-    'email': 'ada@headway.co',
+    'email': 'ada@formal.com',
     'firstName': 'Ada',
     'lastName': 'Lovelayce',
     'password': 'adalovelayce',
