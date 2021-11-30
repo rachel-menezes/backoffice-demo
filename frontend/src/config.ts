@@ -6,4 +6,5 @@ export const config: Config = {
     logoUrl: process.env.REACT_APP_COMPANY_LOGO || '',
     primaryColor: process.env.REACT_APP_PRIMARY_COLOR || '',
     secondaryColor: process.env.REACT_APP_SECONDARY_COLOR || '',
+    thirdColor: process.env.REACT_APP_THIRD_COLOR || '',
 };
