@@ -3,4 +3,5 @@ export interface Config {
     logoUrl: string;
     primaryColor: string;
     secondaryColor: string;
+    thirdColor: string;
 }

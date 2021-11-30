@@ -11,6 +11,7 @@ app = flask.Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+
 host = os.getenv('DATABASE_URL')
 dbName = os.getenv('DATABASE_NAME')
 user = os.getenv('DATABASE_USER')
@@ -25,11 +26,10 @@ conn = psycopg2.connect(
     cursor_factory=cursor_factory)
 cursor = conn.cursor()
 
-
 users = [{
     'id': 0,
     'name': 'John Doe',
-    'email': 'john@headway.co',
+    'email': 'john@formal.com',
     'firstName': 'John',
     'lastName': 'Doe',
     'password': 'johndoe',
@@ -37,19 +37,12 @@ users = [{
     {
     'id': 1,
     'name': 'Ada Lovelayce',
-    'email': 'ada@headway.co',
+    'email': 'ada@formal.com',
     'firstName': 'Ada',
     'lastName': 'Lovelayce',
     'password': 'adalovelayce',
 }
 ]
-
-companiesCfg = [{
-    'name': 'headway',
-    'logoUrl': 'https://enduser-demo.s3.amazonaws.com/headway_logo.png',
-    'primaryColor': '#13d183',
-    'secondaryColor': '#fff'
-}]
 
 
 @app.route('/', methods=['GET'])
@@ -64,21 +57,8 @@ def fetch():
     else:
         return "Error: No end user id field provided. Please specify an endUserID."
     try:
-        cursor.execute("select * from pii;", endUserID)
+        cursor.execute("select * from pii", endUserID)
         return jsonify(cursor.fetchall())
-    except:
-        return "Error: an error occured. Please try again."
-
-
-@app.route('/api/v1/company-cfg', methods=["GET"])
-def getDemoConfig():
-    if 'companyName' in request.args:
-        companyName = str(request.args['companyName'])
-    else:
-        return "Error: no company name field provided. Please specify a company name"
-
-    try:
-        return jsonify([c for c in companiesCfg if c['name'] == companyName][0])
     except:
         return "Error: an error occured. Please try again."
 
