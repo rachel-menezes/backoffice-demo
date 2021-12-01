@@ -1,12 +1,10 @@
 # Backoffice Demo
 
-This repository shows how to implement Formal in your backoffice applications.
+This repository shows how to implement Formal SqlCommenter SDK in your back office application.
 
 ## How ?
 
-You can integrate Formal in your backoffice in a couple of lines of code by using our libraries. All the queries made from your backoffice will then be added to Formal logs allowing you to have a better understanding of who uses what on your internal applications.
-
-In order to retrieve the logs from your internal application to Formal, you have to pass an `endUserID` parameter to your query which will then be forwarded to our wrapper.
+You can integrate Formal in your back office application in a couple of lines of code by using our SQLCommenter library. The SQLCommenter library will augment your SQL queries with a comment containing an end_user_id, allowing the Formal Sidecar to apply policies to your users.
 
 ## Example
 
