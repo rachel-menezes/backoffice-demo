@@ -57,6 +57,17 @@ def fetch():
 
 ```
 
+## Build
+Building the project is as simple as building a docker container :
+```
+docker build --build-arg company_name=[your_company] --build-arg api_uri=http://127.0.0.1:4000/api/v1 --build-arg logo=[your_logo_url] --build-arg primary_color=[your_company_1st_color] --build-arg secondary_color=[your_company_2nd_color] --build-arg third_color=[your_company_3rd_color]  -t formal-demo-backend .
+```
+
+## Run
+Running the project can be done after building the docker container AND deploying a Formal proxy on (our console)[https://joinformal.com]:
+```
+docker run -e  DATABASE_URL=[formal_proxy_url] -e DATABASE_NAME=main -e  DATABASE_PASSWORD=[db_pwd] -e DATABASE_USER=[db_user] -p 8080:8080 -p 4000:4000 formal-demo-backend
+```
 
 ## Support
 
