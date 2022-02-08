@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import type { FC } from 'react';
 import SignIn from './SignIn';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import DenseAppBar from "../components/AppBar";
 import DataTable from "../components/Table";
 import Loading from '../components/Loading';
@@ -55,6 +57,17 @@ const HomePage: FC<HomePageProps> = (props: any) => {
     return (
         <>
             <DenseAppBar user={user} setUser={setUser} config={config} />
+            <Box style={{ display: 'flex', justifyContent: 'end' }} >
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 1, mr: 2 }}
+                    onClick={fetchData}
+                >
+                    Refresh
+                </Button>
+            </Box>
             <DataTable rows={data} />
         </>);
 };
