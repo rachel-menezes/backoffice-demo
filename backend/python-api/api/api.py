@@ -59,8 +59,9 @@ def fetch():
     try:
         cursor.execute("select * from pii", endUserID)
         return jsonify(cursor.fetchall())
-    except:
-        return "Error: an error occured. Please try again."
+    except Exception as e:
+        return e
+    # return "Error: an error occured. Please try again."
 
 
 @app.route('/api/v1/sign-in', methods=['POST'])
