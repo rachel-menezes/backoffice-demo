@@ -6,7 +6,7 @@ services:
   region: frankfurt
   env: python
   buildCommand: cd backend/python-api && pip install -r requirements.txt
-  startCommand: cd backend/python-api && gunicorn app:app
+  startCommand: cd backend/python-api && gunicorn wsgi:app
   envVars:
   - key: DATABASE_NAME
     value: 8088
