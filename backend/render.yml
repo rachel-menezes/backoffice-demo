@@ -1,0 +1,20 @@
+services:
+- type: web
+  name: backoffice
+  autoDeploy: true
+  plan: Starter
+  region: frankfurt
+  env: Python
+  buildCommand: cd backend/python-api && pip install -r requirements.txt
+  startCommand: cd backend/python-api && gunicorn app:app
+  envVars:
+  - key: DATABASE_NAME
+    value: 8088
+  - key: DATABASE_PASSWORD
+    value: true
+  - key: DATABASE_URL
+    value: true
+  - key: DATABASE_USER
+    value: true
+  - key: PORT
+    value: 8080
