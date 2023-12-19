@@ -17,21 +17,12 @@ dbName = os.getenv('DATABASE_NAME')
 user = os.getenv('DATABASE_USER')
 password = os.getenv('DATABASE_PASSWORD')
 
-cursor_factory = CommenterCursorFactory()
-conn = psycopg2.connect(
-    host=host,
-    database=dbName,
-    user=user,
-    password=password,
-    cursor_factory=cursor_factory)
-cursor = conn.cursor()
-
 users = [{
     'id': 0,
     'name': 'Mokhtar Bacha',
     'email': 'mokhtar@maytana.com',
-    'firstName': 'John',
-    'lastName': 'Doe',
+    'firstName': 'Mokhtar',
+    'lastName': 'Bacha',
     'password': 'test',
 },
     {
@@ -57,6 +48,14 @@ def fetch():
     else:
         return "Error: No end user id field provided. Please specify an endUserID."
     try:
+        cursor_factory = CommenterCursorFactory()
+        conn = psycopg2.connect(
+            host=host,
+            database=dbName,
+            user=user,
+            password=password,
+            cursor_factory=cursor_factory)
+        cursor = conn.cursor()
         cursor.execute("select * from pii;", "mokhtar@maytana.com")
         return jsonify(cursor.fetchall())
     except Exception as e:
