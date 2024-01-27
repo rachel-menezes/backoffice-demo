@@ -50,13 +50,13 @@ resource "aws_apprunner_service" "formal" {
           port          = "8000"
           runtime       = "PYTHON_3"
           start_command = "cd backend/python-api && gunicorn wsgi:app"
-          runtime_environment_secrets = [
-            "DATABASE_NAME": var.database_name,
-            "DATABASE_PASSWORD": var.database_password,
-            "DATABASE_URL": var.database_url,
-            "DATABASE_USER": var.database_user,
-            "PORT": 8080,
-          ]
+          runtime_environment_secrets = {
+            "DATABASE_NAME" : var.database_name,
+            "DATABASE_PASSWORD" : var.database_password,
+            "DATABASE_URL" : var.database_url,
+            "DATABASE_USER" : var.database_user,
+            "PORT": 8080
+          }
         }
         configuration_source = "API"
       }
