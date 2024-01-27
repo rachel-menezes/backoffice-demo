@@ -2,6 +2,10 @@ variable "region" {
   default = "eu-west-1"
 }
 
+variable "environment" {
+  default = "backoffice-demo"
+}
+
 variable "database_name" {}
 variable "database_password" {}
 variable "database_url" {}

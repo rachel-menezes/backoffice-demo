@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name        = var.name
+    Name        = var.environment
   }
 }
 
@@ -18,13 +18,16 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = var.name
+    Name        = var.environment
   }
 }
 
 resource "aws_apprunner_vpc_connector" "connector" {
   vpc_connector_name = "name"
   subnets            =  aws_subnet.public[*].id
+  tags = {
+    Name        = var.environment
+  }
 }
 
 resource "aws_apprunner_connection" "formal" {
@@ -32,7 +35,7 @@ resource "aws_apprunner_connection" "formal" {
   provider_type   = "GITHUB"
 
   tags = {
-    Name = "formal-apprunner-connection"
+    Name = var.environment
   }
 }
 
@@ -76,9 +79,9 @@ resource "aws_apprunner_service" "formal" {
   }
 
   tags = {
-    Name = "formal-apprunner-service"
+    Name = var.environment
   }
 }
 output "apprunner_service_url" {
-  value = "https://${aws_apprunner_service.service.service_url}"
+  value = "https://${aws_apprunner_service.formal.service_url}"
 }
