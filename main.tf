@@ -1,3 +1,32 @@
+data "aws_availability_zones" "available" {}
+
+resource "aws_vpc" "main" {
+  cidr_block           = "172.0.0.0/16"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name        = var.name
+  }
+}
+
+resource "aws_subnet" "public" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = element(var.public_subnets, count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
+  count                   = 3
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name        = var.name
+  }
+}
+
+resource "aws_apprunner_vpc_connector" "connector" {
+  vpc_connector_name = "name"
+  subnets            =  aws_subnet.public[*].id
+}
+
 resource "aws_apprunner_connection" "formal" {
   connection_name = "formal-github"
   provider_type   = "GITHUB"
@@ -21,6 +50,13 @@ resource "aws_apprunner_service" "formal" {
           port          = "8000"
           runtime       = "PYTHON_3"
           start_command = "cd backend/python-api && gunicorn wsgi:app"
+          runtime_environment_secrets = [
+            "DATABASE_NAME": var.database_name,
+            "DATABASE_PASSWORD": var.database_password,
+            "DATABASE_URL": var.database_url,
+            "DATABASE_USER": var.database_user,
+            "PORT": 8080,
+          ]
         }
         configuration_source = "API"
       }
@@ -42,4 +78,7 @@ resource "aws_apprunner_service" "formal" {
   tags = {
     Name = "formal-apprunner-service"
   }
+}
+output "apprunner_service_url" {
+  value = "https://${aws_apprunner_service.service.service_url}"
 }
