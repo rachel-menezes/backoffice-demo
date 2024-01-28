@@ -148,10 +148,10 @@ resource "aws_apprunner_service" "formal" {
     code_repository {
       code_configuration {
         code_configuration_values {
-          build_command = "cd backend/python-api && pip install -r requirements.txt"
+          build_command = "pip install -r requirements.txt"
           port          = "8000"
           runtime       = "PYTHON_3"
-          start_command = "cd backend/python-api && gunicorn wsgi:app"
+          start_command = "gunicorn wsgi:app"
           runtime_environment_secrets = {
             "DATABASE_NAME" : aws_secretsmanager_secret.db_name.arn,
             "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
@@ -163,6 +163,7 @@ resource "aws_apprunner_service" "formal" {
         configuration_source = "API"
       }
       repository_url = "https://github.com/formalco/backoffice-demo"
+      source_directory = "backend/python-api"
       source_code_version {
         type  = "BRANCH"
         value = "main"
