@@ -146,8 +146,6 @@ resource "aws_apprunner_service" "formal" {
       connection_arn = aws_apprunner_connection.formal.arn
     }
     code_repository {
-      source_directory = "backend/python-api"
-
       code_configuration {
         code_configuration_values {
           build_command = "pip install -r requirements.txt"
@@ -165,6 +163,7 @@ resource "aws_apprunner_service" "formal" {
         configuration_source = "API"
       }
       repository_url = "https://github.com/formalco/backoffice-demo"
+      source_directory = "backend/python-api"
       source_code_version {
         type  = "BRANCH"
         value = "main"
