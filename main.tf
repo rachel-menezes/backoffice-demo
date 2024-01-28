@@ -1,3 +1,15 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.53.0"
+    }
+  }
+
+  required_version = ">= 0.14.9"
+}
+
+
 data "aws_availability_zones" "available" {}
 
 resource "aws_vpc" "main" {
