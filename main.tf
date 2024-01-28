@@ -157,7 +157,7 @@ resource "aws_apprunner_service" "formal" {
             "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
             "DATABASE_URL" : aws_secretsmanager_secret.db_url.arn,
             "DATABASE_USER" : aws_secretsmanager_secret.db_user.arn,
-            "PORT": 8080
+            "PORT": aws_secretsmanager_secret.port.arn
           }
         }
         configuration_source = "API"

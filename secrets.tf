@@ -33,3 +33,12 @@ resource "aws_secretsmanager_secret_version" "db_password" {
   secret_id     = aws_secretsmanager_secret.db_password.id
   secret_string = var.database_password
 }
+
+resource "aws_secretsmanager_secret" "port" {
+  name = "${var.name}-port"
+}
+
+resource "aws_secretsmanager_secret_version" "port" {
+  secret_id     = aws_secretsmanager_secret.port.id
+  secret_string = 8080
+}
