@@ -27,12 +27,39 @@ data "aws_iam_policy_document" "apprunner-instance-assume-policy" {
   }
 }
 
-data "aws_iam_policy_document" "apprunner-instance-role-policy" {
-  statement {
-    actions = ["ssm:GetParameter"]
-    effect = "Allow"
-    resources = ["arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter${data.aws_ssm_parameter.dbpassword.name}"]
-  }
+resource "aws_iam_policy" "iam_policy_secrets" {
+  name        = "ECSAccessToSecrets"
+  description = "Grant App runner access to secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action   = ["secretsmanager:GetSecretValue"],
+        Effect   = "Allow",
+        Resource = aws_secretsmanager_secret.db_password.arn
+
+      },
+      {
+        Action   = ["secretsmanager:GetSecretValue"],
+        Effect   = "Allow",
+        Resource = aws_secretsmanager_secret.db_url.arn
+
+      },
+      {
+        Action   = ["secretsmanager:GetSecretValue"],
+        Effect   = "Allow",
+        Resource = aws_secretsmanager_secret.db_user.arn
+
+      },
+      {
+        Action   = ["secretsmanager:GetSecretValue"],
+        Effect   = "Allow",
+        Resource = aws_secretsmanager_secret.db_name.arn
+
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role" "apprunner-instance-role" {
@@ -41,19 +68,10 @@ resource "aws_iam_role" "apprunner-instance-role" {
   assume_role_policy = data.aws_iam_policy_document.apprunner-instance-assume-policy.json
 }
 
-resource "aws_iam_policy" "Apprunner-policy" {
-  name = "Apprunner-getSSM"
-  policy = data.aws_iam_policy_document.apprunner-instance-role-policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "apprunner-instance-role-attachment" {
-  role = aws_iam_role.apprunner-instance-role.name
-  policy_arn = aws_iam_policy.Apprunner-policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "apprunner-instance-role-xray-attachment" {
-  role = aws_iam_role.apprunner-instance-role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess" 
+resource "aws_iam_policy_attachment" "ecs_secrets_attachment" {
+  name       = "ECSAccessToSecretsAttachment"
+  roles      = [aws_iam_role.apprunner-instance-role.name]
+  policy_arn = aws_iam_policy.iam_policy_secrets.arn
 }
 
 resource "aws_vpc" "main" {
@@ -135,10 +153,10 @@ resource "aws_apprunner_service" "formal" {
           runtime       = "PYTHON_3"
           start_command = "cd backend/python-api && gunicorn wsgi:app"
           runtime_environment_secrets = {
-            "DATABASE_NAME" : var.database_name,
-            "DATABASE_PASSWORD" : var.database_password,
-            "DATABASE_URL" : var.database_url,
-            "DATABASE_USER" : var.database_user,
+            "DATABASE_NAME" : aws_secretsmanager_secret.db_name.arn,
+            "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
+            "DATABASE_URL" : aws_secretsmanager_secret.db_url.arn,
+            "DATABASE_USER" : aws_secretsmanager_secret.db_user.arn,
             "PORT": 8080
           }
         }
