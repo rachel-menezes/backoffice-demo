@@ -2,8 +2,12 @@ variable "region" {
   default = "eu-west-1"
 }
 
-variable "environment" {
+variable "name" {
   default = "backoffice-demo"
+}
+
+variable "environment" {
+  default = "backoffice-demo-env"
 }
 
 variable "database_name" {}
