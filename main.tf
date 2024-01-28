@@ -63,7 +63,7 @@ resource "aws_iam_policy" "iam_policy_secrets" {
 }
 
 resource "aws_iam_role" "apprunner-instance-role" {
-  name = "${var.apprunner-service-role}AppRunnerInstanceRole"
+  name = "${var.name}-app-runner-instance-role"
   path = "/"
   assume_role_policy = data.aws_iam_policy_document.apprunner-instance-assume-policy.json
 }
