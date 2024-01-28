@@ -15,6 +15,47 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
+
+data "aws_iam_policy_document" "apprunner-instance-assume-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = ["tasks.apprunner.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "apprunner-instance-role-policy" {
+  statement {
+    actions = ["ssm:GetParameter"]
+    effect = "Allow"
+    resources = ["arn:aws:ssm:*:${data.aws_caller_identity.current.account_id}:parameter${data.aws_ssm_parameter.dbpassword.name}"]
+  }
+}
+
+resource "aws_iam_role" "apprunner-instance-role" {
+  name = "${var.apprunner-service-role}AppRunnerInstanceRole"
+  path = "/"
+  assume_role_policy = data.aws_iam_policy_document.apprunner-instance-assume-policy.json
+}
+
+resource "aws_iam_policy" "Apprunner-policy" {
+  name = "Apprunner-getSSM"
+  policy = data.aws_iam_policy_document.apprunner-instance-role-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "apprunner-instance-role-attachment" {
+  role = aws_iam_role.apprunner-instance-role.name
+  policy_arn = aws_iam_policy.Apprunner-policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "apprunner-instance-role-xray-attachment" {
+  role = aws_iam_role.apprunner-instance-role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess" 
+}
+
 resource "aws_vpc" "main" {
   cidr_block           = "172.0.0.0/16"
   enable_dns_support   = true
@@ -81,7 +122,7 @@ resource "aws_apprunner_connection" "formal" {
 
 resource "aws_apprunner_service" "formal" {
   service_name = "formal-github-demo"
-
+    // source directory
   source_configuration {
     authentication_configuration {
       connection_arn = aws_apprunner_connection.formal.arn
