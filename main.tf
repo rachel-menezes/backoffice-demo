@@ -22,9 +22,30 @@ resource "aws_subnet" "public" {
   }
 }
 
+
+resource "aws_security_group" "vpc_connector" {
+  name        = "vpc-connector-sg"
+  description = "Default security group to allow inbound/outbound from the VPC"
+  vpc_id      = aws_vpc.main.id
+  depends_on  = [aws_vpc.default]
+
+  ingress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+  }
+
+  egress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+  }
+}
+
 resource "aws_apprunner_vpc_connector" "connector" {
   vpc_connector_name = "name"
   subnets            =  aws_subnet.public[*].id
+  security_groups = [aws_security_group.vpc_connector.id]
   tags = {
     Name        = var.environment
   }
