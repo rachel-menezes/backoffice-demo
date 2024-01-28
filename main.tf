@@ -178,6 +178,10 @@ resource "aws_apprunner_service" "formal" {
     }
   }
 
+  instance_configuration {
+    instance_role_arn = aws_iam_role.apprunner-instance-role.arn
+  }
+
   tags = {
     Environment = var.environment
   }
