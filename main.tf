@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name        = var.environment
+    Environment        = var.environment
   }
 }
 
@@ -18,7 +18,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = var.environment
+    Environment        = var.environment
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_security_group" "vpc_connector" {
   name        = "vpc-connector-sg"
   description = "Default security group to allow inbound/outbound from the VPC"
   vpc_id      = aws_vpc.main.id
-  depends_on  = [aws_vpc.default]
+  depends_on  = [aws_vpc.main]
 
   ingress {
     from_port = "0"
@@ -40,6 +40,10 @@ resource "aws_security_group" "vpc_connector" {
     to_port   = "0"
     protocol  = "-1"
   }
+
+  tags = {
+    Environment        = var.environment
+  }
 }
 
 resource "aws_apprunner_vpc_connector" "connector" {
@@ -47,7 +51,7 @@ resource "aws_apprunner_vpc_connector" "connector" {
   subnets            =  aws_subnet.public[*].id
   security_groups = [aws_security_group.vpc_connector.id]
   tags = {
-    Name        = var.environment
+    Environment        = var.environment
   }
 }
 
@@ -56,7 +60,7 @@ resource "aws_apprunner_connection" "formal" {
   provider_type   = "GITHUB"
 
   tags = {
-    Name = var.environment
+    Environment = var.environment
   }
 }
 
@@ -100,7 +104,7 @@ resource "aws_apprunner_service" "formal" {
   }
 
   tags = {
-    Name = var.environment
+    Environment = var.environment
   }
 }
 output "apprunner_service_url" {
