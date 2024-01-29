@@ -140,7 +140,6 @@ resource "aws_apprunner_connection" "formal" {
 
 resource "aws_apprunner_service" "formal" {
   service_name = "formal-github-demo"
-    // source directory
   source_configuration {
     authentication_configuration {
       connection_arn = aws_apprunner_connection.formal.arn
@@ -172,7 +171,7 @@ resource "aws_apprunner_service" "formal" {
   }
 
   health_check_configuration {
-    protocol = "http"
+    protocol = "HTTP"
     path = "/healthcheck"
   }
 
