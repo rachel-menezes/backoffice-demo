@@ -73,62 +73,6 @@ resource "aws_iam_policy_attachment" "ecs_secrets_attachment" {
   roles      = [aws_iam_role.apprunner-instance-role.name]
   policy_arn = aws_iam_policy.iam_policy_secrets.arn
 }
-
-resource "aws_vpc" "main" {
-  cidr_block           = "172.0.0.0/16"
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-
-  tags = {
-    Environment        = var.environment
-  }
-}
-
-resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = element(var.public_subnets, count.index)
-  availability_zone       = data.aws_availability_zones.available.names[count.index]
-  count                   = 3
-  map_public_ip_on_launch = true
-
-  tags = {
-    Environment        = var.environment
-  }
-}
-
-
-resource "aws_security_group" "vpc_connector" {
-  name        = "vpc-connector-sg"
-  description = "Default security group to allow inbound/outbound from the VPC"
-  vpc_id      = aws_vpc.main.id
-  depends_on  = [aws_vpc.main]
-
-  ingress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-  }
-
-  egress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-  }
-
-  tags = {
-    Environment        = var.environment
-  }
-}
-
-resource "aws_apprunner_vpc_connector" "connector" {
-  vpc_connector_name = "name"
-  subnets            =  aws_subnet.public[*].id
-  security_groups = [aws_security_group.vpc_connector.id]
-  tags = {
-    Environment        = var.environment
-  }
-}
-
 resource "aws_apprunner_connection" "formal" {
   connection_name = "formal-github"
   provider_type   = "GITHUB"
@@ -173,13 +117,6 @@ resource "aws_apprunner_service" "formal" {
   health_check_configuration {
     protocol = "HTTP"
     path = "/healthcheck"
-  }
-
-  network_configuration {
-    egress_configuration {
-      egress_type       = "VPC"
-      vpc_connector_arn = aws_apprunner_vpc_connector.connector.arn
-    }
   }
 
   instance_configuration {
