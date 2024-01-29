@@ -41,7 +41,7 @@ def home():
     return "<p>Hello World </p>"
 
 @app.route('/healthcheck', methods=['GET'])
-def home():
+def healthcheck():
     return "<p>ok</p>"
 
 
