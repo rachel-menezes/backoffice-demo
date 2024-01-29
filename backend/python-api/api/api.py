@@ -40,6 +40,10 @@ users = [{
 def home():
     return "<p>Hello World </p>"
 
+@app.route('/healthcheck', methods=['GET'])
+def home():
+    return "<p>ok</p>"
+
 
 @app.route('/api/v1/fetch-all', methods=["GET"])
 def fetch():

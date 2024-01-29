@@ -171,6 +171,11 @@ resource "aws_apprunner_service" "formal" {
     }
   }
 
+  health_check_configuration {
+    protocol = "http"
+    path = "/healthcheck"
+  }
+
   network_configuration {
     egress_configuration {
       egress_type       = "VPC"
