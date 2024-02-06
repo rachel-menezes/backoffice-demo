@@ -2,6 +2,7 @@ import psycopg2
 from formal.sqlcommenter.psycopg2.extension import CommenterCursorFactory
 import flask
 import os
+import json
 
 from flask import request, jsonify
 from flask_cors import CORS
@@ -17,23 +18,12 @@ dbName = os.getenv('DATABASE_NAME')
 user = os.getenv('DATABASE_USER')
 password = os.getenv('DATABASE_PASSWORD')
 
-users = [{
-    'id': 0,
-    'name': 'Mokhtar Bacha',
-    'email': 'mokhtar@maytana.com',
-    'firstName': 'Mokhtar',
-    'lastName': 'Bacha',
-    'password': 'test',
-},
-    {
-    'id': 1,
-    'name': 'Ada Lovelayce',
-    'email': 'ada@formal.com',
-    'firstName': 'Ada',
-    'lastName': 'Lovelayce',
-    'password': 'adalovelayce',
-}
-]
+users_json = os.getenv('USERS')
+
+if users_json:
+    users = json.loads(users_json)
+else:
+    users = [] 
 
 
 @app.route('/', methods=['GET'])

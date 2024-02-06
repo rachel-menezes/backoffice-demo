@@ -18,3 +18,5 @@ services:
     value: true
   - key: PORT
     value: 8080
+  - key: USERS
+    value: []

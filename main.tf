@@ -111,7 +111,9 @@ resource "aws_apprunner_service" "formal" {
             "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
             "DATABASE_URL" : aws_secretsmanager_secret.db_url.arn,
             "DATABASE_USER" : aws_secretsmanager_secret.db_user.arn,
-            "PORT": aws_secretsmanager_secret.port.arn
+            "PORT": aws_secretsmanager_secret.port.arn,
+            "USERS": aws_secretsmanager_secret.users.arn
+          }
         }
       }
       image_identifier = "${aws_ecr_repository.app_repository.repository_url}:latest" # Use the correct tag

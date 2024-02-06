@@ -42,3 +42,12 @@ resource "aws_secretsmanager_secret_version" "port" {
   secret_id     = aws_secretsmanager_secret.port.id
   secret_string = 8080
 }
+
+resource "aws_secretsmanager_secret" "users" {
+  name = "${var.name}-users"
+}
+
+resource "aws_secretsmanager_secret_version" "users" {
+  secret_id     = aws_secretsmanager_secret.users.id
+  secret_string = var.users
+}
