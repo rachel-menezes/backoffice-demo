@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "apprunner-instance-assume-policy" {
 
     principals {
       type = "Service"
-      identifiers = ["build.apprunner.amazonaws.com"]
+      identifiers = ["build.apprunner.amazonaws.com","tasks.apprunner.amazonaws.com"]
     }
   }
 }
