@@ -115,7 +115,6 @@ resource "aws_apprunner_service" "formal" {
             "USERS": aws_secretsmanager_secret.users.arn
           }
         }
-      }
       image_identifier = "${aws_ecr_repository.app_repository.repository_url}:latest" # Use the correct tag
       image_repository_type = "ECR"
       }
@@ -134,6 +133,7 @@ resource "aws_apprunner_service" "formal" {
     Environment = var.environment
   }
 }
+
 output "apprunner_service_url" {
   value = "https://${aws_apprunner_service.formal.service_url}"
 }
