@@ -22,8 +22,17 @@ data "aws_iam_policy_document" "apprunner-instance-assume-policy" {
 
     principals {
       type = "Service"
-      identifiers = ["tasks.apprunner.amazonaws.com"]
+      identifiers = ["build.apprunner.amazonaws.com"]
     }
+  }
+}
+
+resource "aws_ecr_repository" "app_repository" {
+  name                 = "backoffice-demo" # Name your repository
+  image_tag_mutability = "MUTABLE"
+  
+  image_scanning_configuration {
+    scan_on_push = true
   }
 }
 
@@ -34,6 +43,11 @@ resource "aws_iam_policy" "iam_policy_secrets" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
+      {
+        Action = ["ecr:*"]
+        Effect = "Allow",
+        Resource = aws_ecr_repository.app_repository.arn
+      },
       {
         Action   = ["secretsmanager:GetSecretValue"],
         Effect   = "Allow",
@@ -88,12 +102,9 @@ resource "aws_apprunner_service" "formal" {
     authentication_configuration {
       connection_arn = aws_apprunner_connection.formal.arn
     }
-    code_repository {
-      code_configuration {
-        code_configuration_values {
-          build_command = "python3 -m pip install -r requirements.txt"
-          port          = "8000"
-          runtime       = "PYTHON_311"
+    image_repository {
+      image_configuration {
+          port          = "4000"
           start_command = "gunicorn wsgi:app"
           runtime_environment_secrets = {
             "DATABASE_NAME" : aws_secretsmanager_secret.db_name.arn,
@@ -101,22 +112,16 @@ resource "aws_apprunner_service" "formal" {
             "DATABASE_URL" : aws_secretsmanager_secret.db_url.arn,
             "DATABASE_USER" : aws_secretsmanager_secret.db_user.arn,
             "PORT": aws_secretsmanager_secret.port.arn
-          }
         }
-        configuration_source = "API"
       }
-      repository_url = "https://github.com/formalco/backoffice-demo"
-      source_directory = "backend/python-api"
-      source_code_version {
-        type  = "BRANCH"
-        value = "main"
+      image_identifier = "${aws_ecr_repository.app_repository.repository_url}:latest" # Use the correct tag
+      image_repository_type = "ECR"
       }
-    }
   }
 
   health_check_configuration {
     protocol = "HTTP"
-    path = "/healthcheck"
+    path = "/"
   }
 
   instance_configuration {

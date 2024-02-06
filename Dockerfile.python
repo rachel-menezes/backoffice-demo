@@ -1,0 +1,11 @@
+FROM python:3.11
+
+WORKDIR /opt/app
+
+COPY . .
+
+RUN cd backend/python-api && python3 -m pip install -r requirements.txt
+
+EXPOSE 4000
+
+CMD ["python3","./wsgi.py"]
