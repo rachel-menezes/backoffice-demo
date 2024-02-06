@@ -100,7 +100,7 @@ resource "aws_apprunner_service" "formal" {
   service_name = "formal-github-demo"
   source_configuration {
     authentication_configuration {
-      connection_arn = aws_apprunner_connection.formal.arn
+      access_role_arn = aws_iam_role.apprunner-instance-role.arn
     }
     image_repository {
       image_configuration {
