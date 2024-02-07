@@ -96,7 +96,7 @@ resource "aws_apprunner_service" "formal" {
       code_configuration {
         code_configuration_values {
           build_command = "python3 -m pip install -r requirements.txt"
-          port          = "8000"
+          port          = "4000"
           runtime       = "PYTHON_311"
           start_command = "gunicorn wsgi:app"
           runtime_environment_secrets = {
