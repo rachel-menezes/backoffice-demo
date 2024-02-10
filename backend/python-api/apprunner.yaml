@@ -10,7 +10,7 @@ run:
   pre-run:
     - pip3 install pipenv
     - pipenv install
-  command: pipenv run gunicorn wsgi.py --log-file -
+  command: pipenv run gunicorn wsgi:app --log-file -
   secrets:
     - name: DATABASE_NAME
       value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-db-name-UMSxXK"
