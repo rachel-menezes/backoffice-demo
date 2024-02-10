@@ -94,15 +94,6 @@ resource "aws_apprunner_service" "formal" {
     }
     code_repository {
       code_configuration {
-        code_configuration_values {
-          runtime_environment_secrets = {
-            "DATABASE_NAME" : aws_secretsmanager_secret.db_name.arn,
-            "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
-            "DATABASE_URL" : aws_secretsmanager_secret.db_url.arn,
-            "DATABASE_USER" : aws_secretsmanager_secret.db_user.arn,
-            "USERS": aws_secretsmanager_secret.users.arn
-          }
-        }
         configuration_source = "API"
       }
       repository_url = "https://github.com/formalco/backoffice-demo"

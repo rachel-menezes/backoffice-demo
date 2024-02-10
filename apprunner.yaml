@@ -6,5 +6,16 @@ run:
     - pip3 install pipenv
     - pipenv install
   command: pipenv run gunicorn wsgi.py --log-file -
+  secrets:
+    - name: DATABASE_NAME
+      value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-db-name-UMSxXK"
+    - name: DATABASE_PASSWORD
+      value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-db-password-f0pPfR"
+    - name: DATABASE_URL
+      value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-db-url-UMSxXK"
+    - name: DATABASE_USER
+      value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-db-user-QSx1UN"
+    - name: USERS
+      value-from: "arn:aws:secretsmanager:eu-west-1:879131189120:secret:backoffice-demo-users-1h8Zt6"
   network:
     port: 4000
