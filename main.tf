@@ -94,7 +94,7 @@ resource "aws_apprunner_service" "formal" {
     }
     code_repository {
       code_configuration {
-        configuration_source = "API"
+        configuration_source = "REPOSITORY"
       }
       repository_url = "https://github.com/formalco/backoffice-demo"
       source_directory = "backend/python-api"
