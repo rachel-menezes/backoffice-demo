@@ -1,0 +1,10 @@
+version: 1.0
+runtime: python3
+run:
+  runtime-version: 3.11
+  pre-run:
+    - pip3 install pipenv
+    - pipenv install
+  command: pipenv run gunicorn wsgi.py --log-file -
+  network:
+    port: 4000

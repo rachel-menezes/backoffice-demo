@@ -95,10 +95,6 @@ resource "aws_apprunner_service" "formal" {
     code_repository {
       code_configuration {
         code_configuration_values {
-          build_command = "python3 -m pip install -r requirements.txt"
-          port          = "4000"
-          runtime       = "PYTHON_311"
-          start_command = "gunicorn wsgi:app"
           runtime_environment_secrets = {
             "DATABASE_NAME" : aws_secretsmanager_secret.db_name.arn,
             "DATABASE_PASSWORD" : aws_secretsmanager_secret.db_password.arn,
