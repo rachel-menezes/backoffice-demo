@@ -3,9 +3,6 @@ from formal.sqlcommenter.psycopg2.extension import CommenterCursorFactory
 import flask
 import os
 import json
-import logging
-logger = logging.getLogger()
-logger.setLevel("INFO")
 
 from flask import request, jsonify
 from flask_cors import CORS
@@ -64,12 +61,12 @@ def fetch():
 def login():
     email = request.get_json().get('email')
     password = request.get_json().get('password')
-    logger.Info("Trying to log user %s with password %s into the app", email, password)
     print("Trying to log user {0} with password {1} into the app".format(email, password))
     if not email or not password:
         return "Error: No username or password field provided. Please specify both."
     try:
         print(users)
+        print(type(users))
         res = [u for u in users if u['email'] ==
                email and u['password'] == password]
 
