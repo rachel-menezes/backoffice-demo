@@ -23,10 +23,10 @@ password = os.getenv('DATABASE_PASSWORD')
 
 users_json = os.getenv('USERS')
 if users_json:
-    logger.info("Loading users...")
+    print("Loading users...")
     users = json.loads(users_json)
 else:
-    logger.info("No USERS set as environment variable...")
+    print("No USERS set as environment variable...")
     users = [] 
 
 
