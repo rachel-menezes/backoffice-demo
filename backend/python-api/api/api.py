@@ -61,9 +61,11 @@ def fetch():
 def login():
     email = request.get_json().get('email')
     password = request.get_json().get('password')
+    print("Trying to log user {0} with password {1} into the app".format(email, password))
     if not email or not password:
         return "Error: No username or password field provided. Please specify both."
     try:
+        print(users)
         res = [u for u in users if u['email'] ==
                email and u['password'] == password]
 
