@@ -25,7 +25,7 @@ users_json = os.getenv('USERS')
 if users_json:
     app.logger.info('Loading users...')
     app.logger.info(users_json)
-    users = json.loads(users_json)
+    users = list(json.loads(users_json))
 else:
     app.logger.info('No USERS set as environment variable...')
     users = [] 
