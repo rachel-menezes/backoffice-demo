@@ -3,6 +3,7 @@ from formal.sqlcommenter.psycopg2.extension import CommenterCursorFactory
 import flask
 import os
 import json
+import logging
 
 from flask import request, jsonify
 from flask_cors import CORS
