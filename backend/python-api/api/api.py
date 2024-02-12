@@ -22,10 +22,11 @@ user = os.getenv('DATABASE_USER')
 password = os.getenv('DATABASE_PASSWORD')
 
 users_json = os.getenv('USERS')
-
 if users_json:
+    logger.info("Loading users...")
     users = json.loads(users_json)
 else:
+    logger.info("No USERS set as environment variable...")
     users = [] 
 
 
@@ -65,7 +66,6 @@ def login():
     email = request.get_json().get('email')
     password = request.get_json().get('password')
     logger.info("Trying to log user %s with password %s into the app", email, password)
-    print("Trying to log user {0} with password {1} into the app".format(email, password))
     if not email or not password:
         return "Error: No username or password field provided. Please specify both."
     try:
