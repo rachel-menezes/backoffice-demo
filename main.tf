@@ -111,6 +111,8 @@ resource "aws_apprunner_service" "formal" {
   }
 
   instance_configuration {
+    cpu = 0.25
+    memory = 1024
     instance_role_arn = aws_iam_role.apprunner-instance-role.arn
   }
 
