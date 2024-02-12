@@ -23,10 +23,11 @@ password = os.getenv('DATABASE_PASSWORD')
 
 users_json = os.getenv('USERS')
 if users_json:
-    print("Loading users...")
+    app.logger.info('Loading users...')
+    app.logger.info(users_json)
     users = json.loads(users_json)
 else:
-    print("No USERS set as environment variable...")
+    app.logger.info('No USERS set as environment variable...')
     users = [] 
 
 
@@ -65,13 +66,12 @@ def fetch():
 def login():
     email = request.get_json().get('email')
     password = request.get_json().get('password')
-    logger.info("Trying to log user %s with password %s into the app", email, password)
+    app.logger.info("Trying to log user %s with password %s into the app", email, password)
     if not email or not password:
         return "Error: No username or password field provided. Please specify both."
     try:
-        print(users)
-        print(type(users))
-        logger.info(type(users))
+        app.logger.info(users)
+        app.logger.info(type(users))
         res = [u for u in users if u['email'] ==
                email and u['password'] == password]
 
