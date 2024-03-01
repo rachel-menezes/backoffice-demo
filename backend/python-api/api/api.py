@@ -32,6 +32,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/', methods=['GET'])
 def home():
+    app.logger.info('Display a application log')
     return "<p>Hello World </p>"
 
 # @app.route('/healthcheck', methods=['GET'])
